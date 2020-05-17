@@ -1,0 +1,152 @@
+#   Crateamations
+#   Made By Shy#7014 (dm if there are any bugs/issues. Thank you!)
+
+command /crate <player> <text> <number>:
+    permission: op
+    trigger:
+        if arg-2 is "wooden_crate":
+            broadcast "&7| &2%arg-1% &a&njust purchased&2 %arg-3% wooden crates&a!"
+            play sound "block.bell.hit" with volume 2 and pitch 4 to all players
+            give arg-3 of {skull::wooden_crate} named "&aWooden Crate" with lore "" and "&7Right click while holding" and "&7this in order to open the crate." to arg 1
+        else if arg-2 is "iron_crate":
+            broadcast "&7| &2%arg-1% &a&njust purchased&2 %arg-3% iron crates&a!"
+            play sound "block.bell.hit" with volume 2 and pitch 4 to all players
+            give arg-3 of {skull::iron_crate} named "&aIron Crate" with lore "" and "&7Right click while holding" and "&7this in order to open the crate." to arg 1
+        else if arg-2 is "golden_crate":
+            broadcast "&7| &2%arg-1% &a&njust purchased&2 %arg-3% gold crates&a!"
+            play sound "block.bell.hit" with volume 2 and pitch 4 to all players
+            give arg-3 of {skull::golden_crate} named "&aGolden Crate" with lore "" and "&7Right click while holding" and "&7this in order to open the crate." to arg 1
+        else:
+            send: "&cError! Correct Usage: /crate [player] [name] [amount]"
+
+on block place:
+    if player's held item's name is "&aWooden Crate":
+        cancel event
+        if {opening_crate::%player's uuid%} is not set:
+            if block above event-block is air:
+                remove 1 of player's tool from player's inventory
+                set {opening_crate::%player's uuid%} to true
+                add event-block's location to {unbreakable::*}
+                add location of block above event-block's location to {unbreakable::*}
+                wait a tick
+                set event-block to oak planks
+                play sound "block.chest.open" with volume 2 and pitch 4 to player
+                wait a second
+                play sound "entity.zombie.attack_wooden_door" with volume 1 and pitch 4 to player
+                set block above event-block to oak sapling
+                wait 3 seconds
+                play sound "block.note_block.bell" with volume 2 and pitch 4 to player
+                broadcast "&2%player% &a&njust opened a wooden crate!"
+                set {_random_wooden_earning} to random integer between 1 and 3
+                if {_random_wooden_earning} is 1:
+                    #give [earning_1] to player
+                else if {_random_wooden_earning} is 2:
+                    #give [earning_2] to player
+                else if {_random_wooden_earning} is 3:
+                    #give [earning_3] to player
+                wait 2 seconds
+                delete {opening_crate::%player's uuid%}
+                set block above event-block to air
+                wait a tick
+                set event-block to air
+                play sound "block.wood.break" to player
+                remove event-block's location from {unbreakable::*}
+                remove location of block above event-block's location from {unbreakable::*}
+            else:
+                send "&cNot enough space to open the crate here!" to player
+        else:
+            send "&cYou can't open more then one crate at once!" to player
+
+    else if player's held item's name is "&aIron Crate":
+        cancel event
+        if {opening_crate::%player's uuid%} is not set:
+            if block above event-block is air:
+                remove 1 of player's tool from player's inventory
+                set {opening_crate::%player's uuid%} to true
+                add event-block's location to {unbreakable::*}
+                add location of block above event-block's location to {unbreakable::*}
+                wait a tick
+                set event-block to iron block
+                play sound "block.anvil.place" with volume 2 and pitch 4 to player
+                wait a second
+                play sound "entity.zombie.attack_iron_door" with volume 1 and pitch 4 to player
+                set block above event-block to anvil
+                wait 3 seconds
+                play sound "block.note_block.bell" with volume 2 and pitch 4 to player
+                broadcast "&2%player% &a&njust opened a iron crate!"
+                set {_random_iron_earning} to random integer between 1 and 5
+                if {_random_iron_earning} is 1:
+                    #give [earning_1] to player
+                else if {_random_iron_earning} is 2:
+                    #give [earning_2] to player
+                else if {_random_iron_earning} is 3:
+                    #give [earning_3] to player
+                else if {_random_iron_earning} is 4:
+                    #give [earning_4] to player
+                else if {_random_iron_earning} is 5:
+                    #give [earning_5] to player
+                wait 2 seconds
+                delete {opening_crate::%player's uuid%}
+                set block above event-block to air
+                wait a tick
+                set event-block to air
+                play sound "block.iron_block.break" to player
+                remove event-block's location from {unbreakable::*}
+                remove location of block above event-block's location from {unbreakable::*}
+            else:
+                send "&cNot enough space to open the crate here!" to player
+        else:
+            send "&cYou can't open more then one crate at once!" to player
+
+    else if player's held item's name is "&aGolden Crate":
+        cancel event
+        if {opening_crate::%player's uuid%} is not set:
+            if block above event-block is air:
+                remove 1 of player's tool from player's inventory
+                set {opening_crate::%player's uuid%} to true
+                add event-block's location to {unbreakable::*}
+                add location of block above event-block's location to {unbreakable::*}
+                wait a tick
+                set event-block to gold block
+                play sound "block.stone.place" with volume 2 and pitch 4 to player
+                wait a second
+                play sound "block.lantern.place" with volume 1 and pitch 1 to player
+                set block above event-block to lantern
+                wait 3 seconds
+                play sound "entity.player.levelup" with volume 2 and pitch 4 to player
+                broadcast "&2%player% &a&njust opened a golden crate!"
+                set {_random_gold_earning} to random integer between 1 and 7
+                if {_random_gold_earning} is 1:
+                    #give [earning_1] to player
+                else if {_random_gold_earning} is 2:
+                    #give [earning_2] to player
+                else if {_random_gold_earning} is 3:
+                    #give [earning_3] to player
+                else if {_random_gold_earning} is 4:
+                    #give [earning_4] to player
+                else if {_random_gold_earning} is 5:
+                    #give [earning_5] to player
+                else if {_random_gold_earning} is 6:
+                    #give [earning_6] to player
+                else if {_random_gold_earning} is 7:
+                    #give [earning_7] to player
+                wait 2 seconds
+                delete {opening_crate::%player's uuid%}
+                set block above event-block to air
+                wait a tick
+                set event-block to air
+                play sound "block.stone.break" to player
+                remove event-block's location from {unbreakable::*}
+                remove location of block above event-block's location from {unbreakable::*}
+            else:
+                send "&cNot enough space to open the crate here!" to player
+        else:
+            send "&cYou can't open more then one crate at once!" to player
+
+    else:
+        stop
+
+on block break:
+    if {unbreakable::*} contains event-block's location:
+        cancel event
+        send "&cYou can't break a crate!" to player
